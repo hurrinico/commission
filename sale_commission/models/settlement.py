@@ -4,7 +4,7 @@
 # © 2015 Pedro M. Baeza (<http://www.serviciosbaeza.com>)
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from openerp import api, exceptions, fields, models, _
+from odoo import api, exceptions, fields, models, _
 
 
 class Settlement(models.Model):
@@ -142,8 +142,8 @@ class Settlement(models.Model):
             if invoice_vals['type'] == 'in_refund':
                 for line in invoice_lines_vals:
                     line['price_unit'] = -line['price_unit']
-            invoice_vals['invoice_line'] = [(0, 0, x)
-                                            for x in invoice_lines_vals]
+            invoice_vals['invoice_line_ids'] = [(0, 0, x)
+                                                for x in invoice_lines_vals]
             invoice = invoice_obj.create(invoice_vals)
             settlement.state = 'invoiced'
             settlement.invoice = invoice.id

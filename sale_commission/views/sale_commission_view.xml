@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
-
+<odoo>
         <record model="ir.ui.view" id="sale_commission_tree">
             <field name="name">Sales commissions tree</field>
             <field name="model">sale.commission</field>
@@ -31,8 +29,9 @@
                         </group>
                     </group>
                     <group string="Rates definition" colspan="4">
-                        <field name="fix_qty"
-                               attrs="{'invisible': [('commission_type', '!=', 'fixed')], 'required': [('commission_type', '=', 'fixed')]}" />
+                        <group col="2">
+                        	<field name="fix_qty" attrs="{'invisible': [('commission_type', '!=', 'fixed')], 'required': [('commission_type', '=', 'fixed')]}"/>
+                        </group>
                         <field name="sections" widget="one2many_list"
                                colspan="4"
                                nolabel="1"
@@ -58,12 +57,10 @@
 
         <menuitem name="Commissions"
                   id="menu_sale_commissions_conf"
-                  parent="base.menu_base_config" />
+                  parent="sales_team.menu_sale_config" />
 
         <menuitem name="Commission types"
                   id="menu_sale_commissions_types"
                   parent="menu_sale_commissions_conf"
                   action="action_commission" />
-
-    </data>
-</openerp>
+</odoo>

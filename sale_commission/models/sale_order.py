@@ -4,7 +4,7 @@
 # © 2015 Pedro M. Baeza (<http://www.serviciosbaeza.com>)
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from openerp import api, fields, models
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
@@ -45,12 +45,11 @@ class SaleOrderLine(models.Model):
         store=True, readonly=True)
 
     @api.model
-    def _prepare_order_line_invoice_line(self, line, account_id=False):
-        vals = super(SaleOrderLine, self)._prepare_order_line_invoice_line(
-            line, account_id=account_id)
+    def _prepare_invoice_line(self, qty):
+        vals = super(SaleOrderLine, self)._prepare_invoice_line(qty=qty)
         vals['agents'] = [
             (0, 0, {'agent': x.agent.id,
-                    'commission': x.commission.id}) for x in line.agents]
+                    'commission': x.commission.id}) for x in self.agents]
         return vals
 
 
@@ -58,6 +57,7 @@ class SaleOrderLineAgent(models.Model):
     _name = "sale.order.line.agent"
     _rec_name = "agent"
 
+    name = fields.Char(related='agent.name')
     sale_line = fields.Many2one(
         comodel_name="sale.order.line", required=True, ondelete="cascade")
     agent = fields.Many2one(

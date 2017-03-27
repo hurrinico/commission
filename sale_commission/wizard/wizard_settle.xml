@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<openerp>
+<odoo>
     <data>
 
         <record id="view_settled_wizard" model="ir.ui.view">
@@ -9,6 +9,8 @@
                 <form string="Settle commissions">
                     <group>
                         <p colspan="4">Select the date up to which you want to make the settlements:</p>
+                    </group>
+                    <group colspan="2">
                         <field name="date_to" />
                     </group>
                     <group string="Agents" colspan="4">
@@ -44,4 +46,4 @@
                   action="action_agents_settlement" />
 
     </data>
-</openerp>
+</odoo>

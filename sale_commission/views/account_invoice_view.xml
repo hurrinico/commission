@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<odoo>
         <record id="invoice_line_agent_tree" model="ir.ui.view">
             <field name="name">account.invoice.line.agent.tree</field>
             <field name="model">account.invoice.line.agent</field>
@@ -32,13 +31,18 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form" />
             <field name="arch" type="xml">
-                <field name="invoice_line" position="attributes">
+                <field name="invoice_line_ids" position="attributes">
                     <attribute name="context">{'partner_id': partner_id}</attribute>
+                    
                 </field>
-                <xpath expr="//field[@name='invoice_line']/tree//field[@name='price_subtotal']" position="after">
+                <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes">
+                    <attribute name="editable"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='price_subtotal']" position="after">
                     <field name="commission_free"/>
                     <field name="agents"
-                           attrs="{'readonly': [('commission_free', '=', True)]}"/>
+                           attrs="{'readonly': [('commission_free', '=', True)]}"
+                           widget="many2many_tags"/>
                 </xpath>
                 <field name="amount_total" position="after">
                     <field name="commission_total"
@@ -47,6 +51,4 @@
                 </field>
             </field>
         </record>
-
-    </data>
-</openerp>
+</odoo>

@@ -4,7 +4,7 @@
 # © 2015 Pedro M. Baeza (<http://www.serviciosbaeza.com>)
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from openerp import api, exceptions, fields, models, _
+from odoo import api, exceptions, fields, models, _
 
 
 class SaleCommission(models.Model):
@@ -47,9 +47,10 @@ class SaleCommissionSection(models.Model):
     amount_to = fields.Float(string="To")
     percent = fields.Float(string="Percent", required=True)
 
-    @api.one
+    @api.multi
     @api.constrains('amount_from', 'amount_to')
     def _check_amounts(self):
-        if self.amount_to < self.amount_from:
-            raise exceptions.ValidationError(
-                _("The lower limit cannot be greater than upper one."))
+        for commission_section in self:
+            if commission_section.amount_to < commission_section.amount_from:
+                raise exceptions.ValidationError(
+                    _("The lower limit cannot be greater than upper one."))

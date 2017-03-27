@@ -6,31 +6,14 @@
 
 {
     'name': 'Sales commissions',
-    'version': '8.0.2.3.0',
-    'author': 'Pexego, '
-              'Savoire-faire linux, '
-              'Avanzosc, '
-              'Abstract, '
-              'Serv. Tecnol. Avanzados - Pedro M. Baeza, '
-              'Odoo Community Association (OCA)',
+    'version': '10.0.1.0.0',
+    'author': 'Odoo Community Association (OCA)',
     "category": "Sales Management",
     'license': 'AGPL-3',
     'depends': [
-        'base',
         'account',
         'product',
         'sale'
-    ],
-    'contributors': [
-        "Pexego",
-        "Davide Corio <davide.corio@domsense.com>",
-        "Joao Alfredo Gama Batista <joao.gama@savoirfairelinux.com>",
-        "Sandy Carter <sandy.carter@savoirfairelinux.com>",
-        "Giorgio Borelli <giorgio.borelli@abstract.it>",
-        "Daniel Campos <danielcampos@avanzosc.es>",
-        "Pedro M. Baeza <pedro.baeza@serviciosbaeza.com>",
-        "Oihane Crucelaegui <oihanecruce@gmail.com>",
-        "Iván Todorovich <ivan.todorovich@gmail.com",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -42,7 +25,6 @@
         "views/settlement_view.xml",
         "wizard/wizard_settle.xml",
         "wizard/wizard_invoice.xml",
-        # "report/cc_commission_report.xml"
     ],
     "demo": [
         'demo/sale_agent_demo.xml',
@@ -50,5 +32,5 @@
     'test': [
         'test/sale_commission_demo.yml',
     ],
-    'installable': False
+    'installable': True
 }
