@@ -13,6 +13,7 @@ class Settlement(models.Model):
     def _default_currency(self):
         return self.env.user.company_id.currency_id.id
 
+    name = fields.Char(string="Name")
     total = fields.Float(compute="_compute_total", readonly=True, store=True)
     date_from = fields.Date(string="From")
     date_to = fields.Date(string="To")
@@ -67,9 +68,9 @@ class Settlement(models.Model):
             'context': {'settlement_ids': self.ids}
         }
 
+
     def _prepare_invoice_header(self, settlement, journal, date=False):
-        invoice_obj = self.env['account.invoice']
-        invoice_vals = {
+        invoice = self.env['account.invoice'].new({
             'partner_id': settlement.agent.id,
             'type': ('in_invoice' if journal.type == 'purchase' else
                      'in_refund'),
@@ -77,36 +78,29 @@ class Settlement(models.Model):
             'journal_id': journal.id,
             'company_id': self.env.user.company_id.id,
             'state': 'draft',
-        }
+        })
         # Get other invoice values from partner onchange
-        invoice_vals.update(invoice_obj.onchange_partner_id(
-            type=invoice_vals['type'],
-            partner_id=invoice_vals['partner_id'],
-            company_id=invoice_vals['company_id'])['value'])
-        return invoice_vals
+        invoice._onchange_partner_id()
+        return invoice._convert_to_write(invoice._cache)
 
-    def _prepare_invoice_line(self, settlement, invoice_vals, product):
-        invoice_line_obj = self.env['account.invoice.line']
-        invoice_line_vals = {
+    def _prepare_invoice_line(self, settlement, invoice, product):
+        invoice_line = self.env['account.invoice.line'].new({
+            'invoice_id': invoice['account_id'],
             'product_id': product.id,
             'quantity': 1,
-        }
+        })
         # Get other invoice line values from product onchange
-        invoice_line_vals.update(invoice_line_obj.product_id_change(
-            product=invoice_line_vals['product_id'], uom_id=False,
-            type=invoice_vals['type'], qty=invoice_line_vals['quantity'],
-            partner_id=invoice_vals['partner_id'],
-            fposition_id=invoice_vals['fiscal_position'])['value'])
-        # Put line taxes
-        invoice_line_vals['invoice_line_tax_id'] = \
-            [(6, 0, tuple(invoice_line_vals['invoice_line_tax_id']))]
+        invoice_line._onchange_product_id()
+        invoice_line_vals = invoice_line._convert_to_write(invoice_line._cache)
         # Put commission fee
-        invoice_line_vals['price_unit'] = settlement.total
+        if invoice.type == 'in_refund':
+            invoice_line_vals['price_unit'] = -settlement.total
+        else:
+            invoice_line_vals['price_unit'] = settlement.total
         # Put period string
-        partner = self.env['res.partner'].browse(invoice_vals['partner_id'])
         lang = self.env['res.lang'].search(
-            [('code', '=', partner.lang or self.env.context.get('lang',
-                                                                'en_US'))])
+            [('code', '=', invoice.partner_id.lang or
+              self.env.context.get('lang', 'en_US'))])
         date_from = fields.Date.from_string(settlement.date_from)
         date_to = fields.Date.from_string(settlement.date_to)
         invoice_line_vals['name'] += "\n" + _('Period: from %s to %s') % (

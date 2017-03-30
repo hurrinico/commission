@@ -36,11 +36,10 @@ class SaleCommissionMakeInvoice(models.TransientModel):
         string='Product for invoicing',
         comodel_name='product.product', required=True)
     settlements = fields.Many2many(
-        comodel_name='sale.commission.settlement',
-        relation="sale_commission_make_invoice_settlement_rel",
-        column1='wizard_id', column2='settlement_id',
-        domain="[('state', '=', 'settled')]",
-        default=_default_settlements)
+        comodel_name='sale.commission.settlement')
+    partners = fields.Many2many(comodel_name='res.partner')
+    settlement_ids = fields.Many2many(
+        comodel_name='sale.commission.settlement')
 
     from_settlement = fields.Boolean(default=_default_from_settlement)
     date = fields.Date()

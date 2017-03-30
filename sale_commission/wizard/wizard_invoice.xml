@@ -17,7 +17,9 @@
                            attrs="{'invisible': [('from_settlement', '=', True)]}">
                         <p colspan="4">(keep empty for invoicing all the settlements)</p>
                         <field name="from_settlement" invisible="1"/>
-                        <field name="settlements" nolabel="1" widget="many2many_list"/>
+                        <field name="settlements" colspan="4"/>
+                        <field name="partners" colspan="4"/>
+                        <field name="settlement_ids" colspan="4"/>
                     </group>
                     <footer>
                         <button name="button_create"
