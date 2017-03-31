@@ -7,16 +7,18 @@
             <field name="model">sale.commission.make.invoice</field>
             <field name="arch" type="xml">
                 <form string="Make invoices">
-                    <group>
+                    <group colspan="2">
                         <field name="journal" />
                         <field name="product" />
-                        <field name="date" />
+                        <field name="date"/>
                     </group>
                     <group string="Settlements"
                            attrs="{'invisible': [('from_settlement', '=', True)]}">
                         <p colspan="4">(keep empty for invoicing all the settlements)</p>
                         <field name="from_settlement" invisible="1"/>
-                        <field name="settlements" nolabel="1" widget="many2many_list"/>
+                        <group colspan="4">
+                            <field name="settlements"/>
+                        </group>
                     </group>
                     <footer>
                         <button name="button_create"

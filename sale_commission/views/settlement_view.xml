@@ -4,7 +4,7 @@
         <field name="name">Settlements tree</field>
         <field name="model">sale.commission.settlement</field>
         <field name="arch" type="xml">
-            <tree string="Settlements" create="false"
+            <tree string="Settlements"
                   colors="red: state == 'cancel'; gray: state == 'invoiced'">
                 <field name="agent"/>
                 <field name="date_from"/>
@@ -132,17 +132,5 @@
          </field>
     </record>
 
-    <!--<record model="ir.actions.act_window" id="action_settlement_report">-->
-        <!--<field name="name">Agents settlements analysis</field>-->
-        <!--<field name="type">ir.actions.act_window</field>-->
-        <!--<field name="res_model">sale.commission.settlement.line</field>-->
-        <!--<field name="view_type">form</field>-->
-        <!--<field name="view_mode">graph</field>-->
-    <!--</record>-->
-
-    <!--<menuitem id="menu_action_settlement_report"-->
-              <!--parent="base.next_id_64"-->
-              <!--sequence="80"-->
-              <!--action="action_settlement_report" />-->
 
 </odoo>

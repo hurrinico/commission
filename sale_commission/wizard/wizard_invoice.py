@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-# © 2011 Pexego Sistemas Informáticos (<http://www.pexego.es>)
-# © 2015-2016 Pedro M. Baeza (<http://www.serviciosbaeza.com>)
-# © 2015-2016 Oihane Crucelaegui
-# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from openerp import models, fields, api, _
+from odoo import models, fields, api, _
 
 
 class SaleCommissionMakeInvoice(models.TransientModel):
@@ -37,7 +33,6 @@ class SaleCommissionMakeInvoice(models.TransientModel):
         column1='wizard_id', column2='settlement_id',
         domain="[('state', '=', 'settled')]",
         default=_default_settlements)
-
     from_settlement = fields.Boolean(default=_default_from_settlement)
     date = fields.Date()
 

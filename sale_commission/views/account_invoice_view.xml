@@ -40,6 +40,9 @@
                 <field name="agents"
                        attrs="{'readonly': [('commission_free', '=', True)]}"/>
             </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes">
+                    <attribute name="editable"/>
+                </xpath>
             <field name="amount_total" position="after">
                 <field name="commission_total"
                        widget="monetary"

@@ -38,4 +38,14 @@
         </field>
     </record>
 
+    <!-- inherited view to open form for every user -->
+        <record id="view_sale_commission_form_editable_list" model="ir.ui.view">
+            <field name="name">sale.commission.form.editable.list</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form_editable_list"/>
+            <field name="arch" type="xml">
+                <field name="groups_id" eval="[(6, 0, [])]"/>
+            </field>
+        </record>
+
 </odoo>

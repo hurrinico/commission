@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
-# © 2011 Pexego Sistemas Informáticos (<http://www.pexego.es>)
-# © 2015 Avanzosc (<http://www.avanzosc.es>)
-# © 2015-2016 Pedro M. Baeza (<http://www.serviciosbaeza.com>)
-# © 2015-2016 Oihane Crucelaegui
-# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from openerp import api, exceptions, fields, models, _
+from odoo import api, exceptions, fields, models, _
 
 
 class Settlement(models.Model):
     _name = "sale.commission.settlement"
+    _description = "Settlement"
 
     def _default_currency(self):
         return self.env.user.company_id.currency_id.id
 
+    name = fields.Char('Name')
     total = fields.Float(compute="_compute_total", readonly=True, store=True)
     date_from = fields.Date(string="From")
     date_to = fields.Date(string="To")
@@ -35,6 +32,7 @@ class Settlement(models.Model):
     currency_id = fields.Many2one(
         comodel_name='res.currency', readonly=True,
         default=_default_currency)
+
 
     @api.depends('lines', 'lines.settled_amount')
     def _compute_total(self):
